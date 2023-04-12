@@ -53,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             return "Employee deleted with id: "+id;
         }
         else{
-            return "Employee is not present to delete";
+            return "Employee ID "+id+" is not present to delete";
         }
     }
 

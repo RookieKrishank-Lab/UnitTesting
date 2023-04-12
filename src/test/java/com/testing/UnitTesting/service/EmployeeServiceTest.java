@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -40,7 +40,7 @@ public class EmployeeServiceTest {
     @BeforeEach
     public void setup(){
         employee = Employee.builder()
-                .id(1L)
+                .id(8L)
                 .firstName("Krishank")
                 .lastName("Sarma")
                 .email("krishank@gmail.com")
@@ -55,7 +55,7 @@ public class EmployeeServiceTest {
     public void givenEmployeeObject_whenSaveEmployee_thenReturnEmployeeObject() {
 
         //given - precondition or setup
-        given(employeeRepository.findByEmail(employee.getEmail()))                      //here inside Service we have saveEmployee method, which have 2 methods findByEmail and save method so we to stub these 2 methods(i.e mock these 2 methods) and then provide a configure response
+        given(employeeRepository.findByEmail(employee.getEmail()))                      //here inside Service we have saveEmployee method, which have 2 methods findByEmail and save method. So we need to stub these 2 methods(i.e mock these 2 methods) and then provide a configure response
                 .willReturn(Optional.empty());
 
         given(employeeRepository.save(employee)).willReturn(employee);
@@ -191,11 +191,16 @@ public class EmployeeServiceTest {
     @Test
     public void givenEmployeeId_whenDeleteEmployee_thenDeleteThatEmployeeId() {
 
+        long employeeId = 8L;
         //given - precondition or setup
-        given(employeeRepository.findById(employee.getId())).willReturn()
+        given(employeeRepository.findById(employee.getId())).willReturn(Optional.of(employee));
+        willDoNothing().given(employeeRepository).deleteById(employee.getId());
 
         //when - action or behaviour we are going to test
+        String deleteString = employeeService.deleteEmployee(employeeId);
 
         //then - verify the record
+        System.out.println(deleteString);
+        verify(employeeRepository, times(1)).deleteById(employee.getId());
     }
 }
