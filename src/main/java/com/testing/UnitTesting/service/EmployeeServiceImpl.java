@@ -4,6 +4,8 @@ import com.testing.UnitTesting.exception.ResourceNotFoundException;
 import com.testing.UnitTesting.model.Employee;
 import com.testing.UnitTesting.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,14 +48,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public String deleteEmployee(long id) {
+    public ResponseEntity<String> deleteEmployee(long id) {
         Optional<Employee> deleteEmployee = employeeRepository.findById(id);
         if (deleteEmployee.isPresent()){
             employeeRepository.deleteById(id);
-            return "Employee deleted with id: "+id;
+            //return "Employee deleted with id: "+id;
+            return new ResponseEntity<>("Employee deleted with id: "+id, HttpStatus.OK);
         }
         else{
-            return "Employee ID "+id+" is not present to delete";
+            //return "Employee ID "+id+" is not present to delete";
+            return new ResponseEntity<>("Employee ID "+id+" is not present to delete", HttpStatus.NOT_FOUND);
         }
     }
 

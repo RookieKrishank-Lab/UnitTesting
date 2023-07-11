@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -158,7 +159,7 @@ public class EmployeeServiceTest {
     public void givenEmployeeId_whenGetEmployeeById_thenReturnEmployeeObject() {
 
         //given - precondition or setup
-        given(employeeRepository.findById(1L)).willReturn(Optional.of(employee));
+        given(employeeRepository.findById(8L)).willReturn(Optional.of(employee));                   //if i pass something else instead of 8L the test case fail
 
         //when - action or behaviour we are going to test
         Employee uniqueEmployee = employeeService.getEmployeeById(employee.getId()).get();
@@ -186,21 +187,40 @@ public class EmployeeServiceTest {
         System.out.println("Updated values: "+employee.getFirstName()+"and"+employee.getEmail());
     }
 
-    //JUnit test for deleteEmployee method
+    //JUnit test for deleteEmployee method  (positive scinario = valid employee Id)
     @DisplayName("JUnit test for deleteEmployee method")
     @Test
     public void givenEmployeeId_whenDeleteEmployee_thenDeleteThatEmployeeId() {
 
         long employeeId = 8L;
+
+
         //given - precondition or setup
-        given(employeeRepository.findById(employee.getId())).willReturn(Optional.of(employee));
-        willDoNothing().given(employeeRepository).deleteById(employee.getId());
+        given(employeeRepository.findById(employeeId)).willReturn(Optional.of(employee));
+        willDoNothing().given(employeeRepository).deleteById(employeeId);
 
         //when - action or behaviour we are going to test
-        String deleteString = employeeService.deleteEmployee(employeeId);
+        ResponseEntity<String> deleteString = employeeService.deleteEmployee(employeeId);
 
         //then - verify the record
         System.out.println(deleteString);
-        verify(employeeRepository, times(1)).deleteById(employee.getId());
+        verify(employeeRepository, times(1)).deleteById(employeeId);                    //times is used to check how many times the passed method is called. Here that method is deleteById. We can check for any method
+    }
+
+    //JUnit test for deleteEmployee method  (negative scinario = Invalid employee Id)
+    @DisplayName("JUnit test for deleteEmployee method")
+    @Test
+    public void givenInvalidEmployeeId_whenDeleteEmployee_thenReturnInvalidString() {
+
+        long employeeId = 82L;
+        //given - precondition or setup
+        given(employeeRepository.findById(employeeId)).willReturn(Optional.empty());
+
+        //when - action or behaviour we are going to test
+        ResponseEntity<String> deleteString = employeeService.deleteEmployee(employeeId);
+
+        //then - verify the record
+        System.out.println(deleteString);
+        verify(employeeRepository, times(0)).deleteById(employeeId);
     }
 }
