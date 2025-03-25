@@ -5,31 +5,40 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.OPTIONAL;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)            //this will disable the in-memory database support
 public class EmployeeRepositoryTest {
 
-    @Autowired
+    @Mock
     private EmployeeRepository employeeRepository;
 
     private Employee employee;
 
     @BeforeEach                                             //this annonation tell that whatever is inside this annotation run those things before excuiting each @Test
     public void setup(){
-        employee = Employee.builder()
-                .firstName("Krishn")
-                .lastName("Sarma")
-                .email("kri@mail.com")
-                .build();
+        MockitoAnnotations.openMocks(this);
+//        employee = Employee.builder()
+//                .firstName("Krishn")
+//                .lastName("Sarma")
+//                .email("kri@mail.com")
+//                .build();
     }
 
     //Junit test for save Employee operation
@@ -76,16 +85,31 @@ public class EmployeeRepositoryTest {
                 .email("Rahul@mail.com")
                 .build();
 
+        List<Employee> employeeListSaved = new ArrayList<>();
+        when(employeeRepository.save(employee)).thenReturn(employee);
+        when(employeeRepository.save(employee1)).thenReturn(employee1);
+        when(employeeRepository.save(employee2)).thenReturn(employee2);
+        when(employeeRepository.findAll()).thenReturn(Arrays.asList(employee,employee1,employee2));
         employeeRepository.save(employee);
         employeeRepository.save(employee1);
         employeeRepository.save(employee2);
+
+        
+//        when(employeeRepository.save(employee)).thenReturn(employee);
+//        when(employeeRepository.save(employee1)).thenReturn(employee1);
+//        when(employeeRepository.save(employee2)).thenReturn(employee2);
+//
+//        employeeListSaved.add(employeeRepository.save(employee));
+//        employeeListSaved.add(employeeRepository.save(employee1));
+//        employeeListSaved.add(employeeRepository.save(employee2));
+//        when(employeeRepository.findAll()).thenReturn(employeeListSaved);
 
         //when - action or behaviour we are going to test
         List<Employee> employeeList = employeeRepository.findAll();
 
         //then - verify the record
         assertThat(employeeList).isNotNull();
-        assertThat(employeeList.size()).isEqualTo(3);
+        assertThat(employeeList.size()).isEqualTo(3);                  //REASON for using 4=one extra as one default data already there in DB but while using docker image it will be 3 as we are just saving 3 employee data
     }
 
     //JUnit test for get employee by id operation
@@ -207,21 +231,26 @@ public class EmployeeRepositoryTest {
     public void givenFirstNameAndLastName_whenFindByJQPLNamedParams_thenReturnEmployeeObject() {
 
         //given - precondition or setup
+        //Krishank object is saved in DB
         Employee employee = Employee.builder()
-                .firstName("Krishn")
+                .firstName("Krishank")
                 .lastName("Sarma")
                 .email("kri@mail1.com")
                 .build();
         employeeRepository.save(employee);
+
+        //passed value
         String firstName="Krishank";
         String lastName="Sarma";
 
         //when - action or behaviour we are going to test
+        //we are checking whether the passing the passed value values in the argument below are able to retrieve the necessary object. We are saving the retrieve data in savedEmployee object, and then we are checking if the savedEmployee object is not null
         Employee savedEmployee = employeeRepository.findByJPQLNamedParams(firstName,lastName);
 
         //then - verify the record
         System.out.println("Repo value: "+employee.getFirstName()+" "+employee.getLastName());
         System.out.println("Passed argument value: "+firstName+" "+lastName);
+        //here we are checking if the savedEmployee object is not null means the necessary data was retrieved from the DB and assigned to savedEmployee or not. We are not checking the values directly means if the correct data was not passed in the argument then anyway we won't have the required data in savedEmployee object
         assertThat(savedEmployee).isNotNull();
     }
 

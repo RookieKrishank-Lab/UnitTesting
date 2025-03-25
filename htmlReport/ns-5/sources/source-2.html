@@ -1,0 +1,97 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EmployeeService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.testing.UnitTesting.service</a>
+</div>
+
+<h1>Coverage Summary for Class: EmployeeService (com.testing.UnitTesting.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">EmployeeService$MockitoMock$ltm7RLLu</td>
+  </tr>
+  <tr>
+    <td class="name">EmployeeService$MockitoMock$ltm7RLLu$auxiliary$BkB8dozk</td>
+  </tr>
+  <tr>
+    <td class="name">EmployeeService$MockitoMock$ltm7RLLu$auxiliary$uw8iYcwZ</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.testing.UnitTesting.service;
+&nbsp;
+&nbsp;import com.testing.UnitTesting.model.Employee;
+&nbsp;import com.testing.UnitTesting.repository.EmployeeRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Service
+&nbsp;public interface EmployeeService {
+&nbsp;
+&nbsp;    public Employee saveEmployee(Employee employee);
+&nbsp;    public List&lt;Employee&gt; getAllEmployee();
+&nbsp;    public Optional&lt;Employee&gt; getEmployeeById(long id);
+&nbsp;    public Employee updateEmployee(Employee employee);
+&nbsp;    public ResponseEntity&lt;String&gt; deleteEmployee(long id);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-22 19:26</div>
+</div>
+</body>
+</html>

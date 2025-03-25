@@ -1,0 +1,116 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EmployeeRepository</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.testing.UnitTesting.repository</a>
+</div>
+
+<h1>Coverage Summary for Class: EmployeeRepository (com.testing.UnitTesting.repository)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">EmployeeRepository$MockitoMock$BbuwO5FH</td>
+  </tr>
+  <tr>
+    <td class="name">EmployeeRepository$MockitoMock$BbuwO5FH$auxiliary$9gqpjJZA</td>
+  </tr>
+  <tr>
+    <td class="name">EmployeeRepository$MockitoMock$BbuwO5FH$auxiliary$CWnizrv0</td>
+  </tr>
+  <tr>
+    <td class="name">EmployeeRepository$MockitoMock$BbuwO5FH$auxiliary$DaXUUGcg</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.testing.UnitTesting.repository;
+&nbsp;
+&nbsp;import com.testing.UnitTesting.model.Employee;
+&nbsp;import org.springframework.data.jpa.repository.JpaRepository;
+&nbsp;import org.springframework.data.jpa.repository.Query;
+&nbsp;import org.springframework.data.repository.query.Param;
+&nbsp;import org.springframework.stereotype.Repository;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Repository
+&nbsp;public interface EmployeeRepository extends JpaRepository&lt;Employee, Long&gt; {
+&nbsp;
+&nbsp;    Optional&lt;Employee&gt; findByEmail(String email);
+&nbsp;
+&nbsp;    //define custom query using JPQL with index parameters
+&nbsp;    @Query(&quot;select e from Employee e where e.firstName=?1 and e.lastName=?2&quot;)           //?=placeholder, and number is the index, in JPQL we use class name i.e Employee. e is the alias for Employee
+&nbsp;    Employee findByJPQL(String firstName, String lastName);
+&nbsp;
+&nbsp;    //define custom query using JPQL with named parameters
+&nbsp;    // This code snippet defines a JPQL query that selects an Employee entity based on their first name and last name using named parameters.
+&nbsp;    // This code snippet defines a method that uses a JPQL query to find an Employee entity by their first name and last name, using named parameters.
+&nbsp;
+&nbsp;    @Query(&quot;select e from Employee e where e.firstName=:firstName and e.lastName=:lastName&quot;)
+&nbsp;    Employee findByJPQLNamedParams(@Param(&quot;firstName&quot;) String firstName, @Param(&quot;lastName&quot;) String lastName);
+&nbsp;
+&nbsp;    //define custom query using native SQL with index parameters
+&nbsp;    @Query(value = &quot;select * from Employees e where e.first_name=?1 and e.last_name=?2&quot;, nativeQuery = true)        //instead of class name we are using table name here it is Employees. nativeQuery = true tell SpringJPA that we are using native SQL query
+&nbsp;    Employee findByNativeSQL(String firstName, String lastName);
+&nbsp;
+&nbsp;    // define custom query using Native SQL with named params
+&nbsp;    @Query(value = &quot;select * from employees e where e.first_name =:firstName and e.last_name =:lastName&quot;,
+&nbsp;            nativeQuery = true)
+&nbsp;    Employee findByNativeSQLNamed(@Param(&quot;firstName&quot;) String firstName, @Param(&quot;lastName&quot;) String lastName);
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-22 19:26</div>
+</div>
+</body>
+</html>

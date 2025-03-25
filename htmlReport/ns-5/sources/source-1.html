@@ -1,0 +1,169 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EmployeeServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.testing.UnitTesting.service</a>
+</div>
+
+<h1>Coverage Summary for Class: EmployeeServiceImpl (com.testing.UnitTesting.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EmployeeServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (14/14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.testing.UnitTesting.service;
+&nbsp;
+&nbsp;import com.testing.UnitTesting.exception.ResourceNotFoundException;
+&nbsp;import com.testing.UnitTesting.model.Employee;
+&nbsp;import com.testing.UnitTesting.repository.EmployeeRepository;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;
+&nbsp;@Service
+&nbsp;public class EmployeeServiceImpl implements EmployeeService {
+&nbsp;
+&nbsp;    private EmployeeRepository employeeRepository;
+&nbsp;
+&nbsp;    //dependency injection using constructor
+<b class="fc">&nbsp;    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {</b>
+<b class="fc">&nbsp;        this.employeeRepository = employeeRepository;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Employee saveEmployee(Employee employee) {
+<b class="fc">&nbsp;        Optional&lt;Employee&gt; saveEmployee = employeeRepository.findByEmail(employee.getEmail());</b>
+<b class="fc">&nbsp;        if (saveEmployee.isPresent()) {</b>
+<b class="fc">&nbsp;            throw new ResourceNotFoundException(&quot;Employee already exist with email: &quot; + employee.getEmail());</b>
+&nbsp;        }
+&nbsp;        else {
+<b class="fc">&nbsp;            return employeeRepository.save(employee);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public List&lt;Employee&gt; getAllEmployee() {
+<b class="fc">&nbsp;        return employeeRepository.findAll();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Optional&lt;Employee&gt; getEmployeeById(long id){
+<b class="fc">&nbsp;        return employeeRepository.findById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Employee updateEmployee(Employee employee) {
+<b class="fc">&nbsp;        return employeeRepository.save(employee);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public ResponseEntity&lt;String&gt; deleteEmployee(long id) {
+<b class="fc">&nbsp;        Optional&lt;Employee&gt; deleteEmployee = employeeRepository.findById(id);</b>
+<b class="fc">&nbsp;        if (deleteEmployee.isPresent()){</b>
+<b class="fc">&nbsp;            employeeRepository.deleteById(id);</b>
+&nbsp;            //return &quot;Employee deleted with id: &quot;+id;
+<b class="fc">&nbsp;            return new ResponseEntity&lt;&gt;(&quot;Employee deleted with id: &quot;+id, HttpStatus.OK);</b>
+&nbsp;        }
+&nbsp;        else{
+&nbsp;            //return &quot;Employee ID &quot;+id+&quot; is not present to delete&quot;;
+<b class="fc">&nbsp;            return new ResponseEntity&lt;&gt;(&quot;Employee ID &quot;+id+&quot; is not present to delete&quot;, HttpStatus.NOT_FOUND);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-11-22 19:26</div>
+</div>
+</body>
+</html>
