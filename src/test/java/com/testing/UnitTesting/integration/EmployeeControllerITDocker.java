@@ -15,9 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +23,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)             //for integrating testing
 @AutoConfigureMockMvc
-@Testcontainers
-public class EmployeeControllerIT {
+//@Testcontainers
+public class EmployeeControllerITDocker extends AbstractionContainerBaseTest {
 
-    @Container
-    private static PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer();
+    /*@Container
+    private static PostgreSQLContainer postgresqlContainer = new PostgreSQLContainer("9.5-3.7")
+            .withUsername("root")
+            .withPassword("root")
+            .withDatabaseName("EMS");
+
+    @DynamicPropertySource
+    public static void dynamicPropertySource(DynamicPropertyRegistry dynamicPropertyRegistry){
+        dynamicPropertyRegistry.add("spring.datasource.url", postgresqlContainer::getJdbcUrl);
+        dynamicPropertyRegistry.add("spring.datasource.username", postgresqlContainer::getUsername);
+        dynamicPropertyRegistry.add("spring.datasource.password", postgresqlContainer::getPassword);
+    }*/
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,6 +57,12 @@ public class EmployeeControllerIT {
     @DisplayName("JUnit test for createEmployee method")
     @Test
     public void givenEmployeeObject_whenCreateEmployee_thenReturnSavedEmployeeObject() throws Exception{
+
+        /*System.out.println(postgresqlContainer.getUsername());
+        System.out.println(postgresqlContainer.getPassword());
+        System.out.println(postgresqlContainer.getDatabaseName());
+        System.out.println(postgresqlContainer.getJdbcUrl());*/
+
         //given - precondition or setup
         Employee employee = Employee.builder()
                 .firstName("Krishank")
